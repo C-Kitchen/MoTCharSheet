@@ -53,7 +53,7 @@ let stats =
 	]
 ];
 
-var qloc = url.indexOf('?');
+var qloc = url.lastIndexOf('?');
 if (qloc > 0){
 	var params = url.substr(qloc+1,url.length);
 	a.setAttribute('href', 'CharSheet.html?' + params);
