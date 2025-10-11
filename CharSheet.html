@@ -53,9 +53,9 @@ let stats =
 	]
 ];
 
-var qloc = url.lastIndexOf('?');
+var qloc = url.lastIndexOf('?@');
 if (qloc > 0){
-	var params = url.substr(qloc+1,url.length);
+	var params = url.substr(qloc+2,url.length);
 	a.setAttribute('href', 'CharSheet.html?' + params);
 	decode(params);
 } else {
@@ -127,7 +127,9 @@ function code(){
 	for (let i = 0; i < save.length; i ++){
 		code += chars[save[i]];
 	}
-	a.setAttribute('href', 'CharSheet.html?' + code);
+	var qloc = url.lastIndexOf('?@');
+	url=url.substr(0,qloc);
+	a.setAttribute('href', url + '?@' + code);
 }
 
 function decode(code){
