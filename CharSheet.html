@@ -85,6 +85,7 @@ for (let i = 0; i < stats.length; i++){
 				x.style.left = statStartx+(l%2)*statWidth*((j%2)*-2+1)+j*statWidth*3+"vw";
 				x.style.width = statWidth + "vw";
 				x.style.height = statHeight + "vw";
+				x.style.color = stats[i][j][k][l][1] ? 'blue' : 'red'
 				
 				x.style.fontSize = statHeight/3+"vw";
 				x.addEventListener("click",function () {flip(i,j,k,l)});
