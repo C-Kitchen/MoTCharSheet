@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<!--<p>Display some text when the checkbox is checked:</p>-->
+
+<label for="myCheck">Bla:</label> 
+<input type="checkbox" id="myCheck" onclick="myFunction()">
+
+<p id="tttt" style="display:none">Checkbox is CHECKED!</p>
+
+
+
+<script>
+var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$!';
+
+var url = window.location.href;
+
+
+//var leftDiv = document.createElement("div"); //Create left div
+//leftDiv.id = "left"; //Assign div id
+//leftDiv.setAttribute("style", "float:left; width:66.5%; line-height: 26px; text-align:left; font-size:12pt; padding-left:8px; height:26px;"); //Set div attributes
+//leftDiv.style.background =  divColor;
+a = document.createElement('a');
+a.setAttribute('href', 'CharSheet.html');
+a.appendChild(document.createTextNode('Save'));
+
+//leftDiv.appendChild(a); // Add name to left div
+
+document.body.appendChild(a);
+
+let stats = 
+[
+	[
+		[
+			[["Aggression",false], ["Heft",false], ["Strength",false]],
+			[["Dexterity",false], ["Reaction",false], ["Speed",false]]
+		],
+		[
+			[["Stability",false], ["Toughness",false], ["Stamina",false]],
+			[["Wisdom",false], ["Intuition",false], ["Willpower",false]]
+		]
+	],
+	[
+		[
+			[["Presence",false], ["Guile",false], ["Charm",false]],
+			[["Wits",false], ["Reason",false], ["Savvy",false]]
+		],
+		[
+			[["Grace",false], ["Stealth",false], ["Agility",false]],
+			[["Empathy",false], ["Scrutiny",false], ["Awareness",false]]
+		]
+	]
+];
+
+var qloc = url.indexOf('?');
+if (qloc > 0){
+	var params = url.substr(qloc+1,url.length);
+	a.setAttribute('href', 'CharSheet.html?' + params);
+	decode(params);
+} else {
+	a.setAttribute('href', 'CharSheet.html');
+}
+
+
+
+let statStarty = 5;
+let statStartx = 2;
+
+let statWidth = (100-statStartx*2)/4;
+let statHeight = 10;
+
+
+
+for (let i = 0; i < stats.length; i++){
+	for (let j = 0; j < stats[i].length; j++){
+		for (let k = 0; k < stats[i][j].length; k++){
+			for (let l = 0; l < stats[i][j][k].length; l++){
+				var x = document.createElement("BUTTON");
+				var t = document.createTextNode(stats[i][j][k][l][0]);
+				x.appendChild(t);
+				x.setAttribute("id", stats[i][j][k][l][0]);
+				x.style.position = "absolute";
+				x.style.top = statStarty+statHeight/2+(statHeight/2*(l-1)*(((k+i)%2)*-2+1) +statHeight*2*k*((i%2)*-2+1)+statHeight*6*i) + "vw";
+				x.style.left = statStartx+(l%2)*statWidth*((j%2)*-2+1)+j*statWidth*3+"vw";
+				x.style.width = statWidth + "vw";
+				x.style.height = statHeight + "vw";
+				
+				x.style.fontSize = statHeight/3+"vw";
+				x.addEventListener("click",function () {flip(i,j,k,l)});
+				document.body.appendChild(x);
+				
+			}
+		}
+	}
+}
+
+function flip(i,j,k,l){
+	stats[i][j][k][l][1] = !stats[i][j][k][l][1];
+	let newColor = stats[i][j][k][l][1] ? 'blue' : 'red';
+	document.getElementById(stats[i][j][k][l][0]).style.color = newColor;
+	console.log(stats[i][j][k][l]);
+	code();
+}
+
+function myFunction() {
+	console.log("hi");
+	console.log("hi2");
+
+}
+
+function code(){
+	var save = [0,0,0,0];
+	for (let i = 0; i < stats.length; i++){
+		for (let j = 0; j < stats[i].length; j++){
+			n = j + i*stats[i].length;
+			for (let k = 0; k < stats[i][j].length; k++){
+				for (let l = 0; l < stats[i][j][k].length; l++){
+					save[n] += stats[i][j][k][l][1] ? 1 << l + k*stats[i][j][k].length : 0;
+				}
+			}
+		}
+	}
+	
+	var code = '';
+	for (let i = 0; i < save.length; i ++){
+		code += chars[save[i]];
+	}
+	a.setAttribute('href', 'CharSheet.html?' + code);
+}
+
+function decode(code){
+	var save = [0,0,0,0];
+	for (let i = 0; i < code.length; i++){
+		save[i] = chars.lastIndexOf(code[i]);
+	}
+	console.log(save);
+	for (let i = 0; i < stats.length; i++){
+		for (let j = 0; j < stats[i].length; j++){
+			n = j + i*stats[i].length;
+			for (let k = 0; k < stats[i][j].length; k++){
+				for (let l = 0; l < stats[i][j][k].length; l++){
+					//save[n] += stats[i][j][k][l][1] ? 1 << l + k*stats[i][j][k].length : 0;
+					//console.log(n);
+					stats[i][j][k][l][1] = (save[n] & (1 << l + k*stats[i][j][k].length)) != 0;
+				}
+			}
+		}
+	}
+}
+
+</script>
+
+</body>
+</html>
+
