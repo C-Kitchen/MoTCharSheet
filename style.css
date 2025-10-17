@@ -16,7 +16,6 @@ header {
 
 /* Container for flexboxes */
 section {
-	background: #f00;
 	display: -webkit-flex;
 	display: flex;
 	font-family:Arial;
@@ -36,12 +35,9 @@ section {
 		"traitcolumn traitcolumn traitcolumn traitcolumn";
 }
 
-.harmarea {
+.trackarea {
 	display: -webkit-flex;
 	display: flex;
-	/*padding: 20px;*/
-	max-width: 720px;
-	word-wrap: break-word;
 }
 
 .resourcearea {
@@ -101,7 +97,7 @@ section {
 }
 
 .traitspaced{
-	margin-bottom:clamp(45px,calc(9vh + 10px),700px);
+	margin-bottom:clamp(45px,calc(9vh + 20px),700px);
 }
 .traitspaced:nth-child(4){
 	margin-bottom:0;
@@ -161,7 +157,7 @@ button{
 		flex-direction: column;
 	}
 	
-	.harmarea {
+	.trackarea {
 		-webkit-flex-direction: column;
 		flex-direction: column;
 	}
@@ -188,7 +184,7 @@ button{
 		margin-top: clamp(23px,4vh,700px); 
 	}
 	.traitspaced{
-		margin-bottom:7vh;
+		margin-bottom:clamp(45px,calc(6vh + 10px),700px);
 	}
 	.traitspaced:nth-child(4){
 		margin-bottom:0;
