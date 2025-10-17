@@ -105,7 +105,7 @@ section {
 }
 
 .traitspaced{
-	margin-bottom:10.5vh;
+	margin-bottom:clamp(45px,calc(9vh + 10px),700px);
 }
 .traitspaced:nth-child(4){
 	margin-bottom:0;
