@@ -146,11 +146,6 @@ button{
 	background-color:#aaa;
 }
 
-.traitcolumn:nth-child(2), .traitcolumn:nth-child(3) {
-	margin-top: calc(clamp(45px,calc(9vh + 10px),700px)/2);
-}
-
-
 /*this area applies only when the screen is narrow, e.g. on mobile*/
 @media (max-width: 850px) {
 	section {
@@ -177,9 +172,6 @@ button{
 	}
 	.traitbutton{
 		font-size:clamp(35px,6vh,70px);
-	}
-	.traitcolumn:nth-child(2), .traitcolumn:nth-child(3) {
-		margin-top: clamp(23px,4vh,700px); 
 	}
 	.traitspaced{
 		margin-bottom:clamp(45px,calc(6vh + 10px),700px);
