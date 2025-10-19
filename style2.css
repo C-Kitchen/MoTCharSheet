@@ -90,17 +90,10 @@ section {
 	margin-bottom:15px;
 }
 
-.trait, .traitspaced{
+.trait{
 	position:relative;
 	display: flex;
 	flex-direction: column;
-}
-
-.traitspaced{
-	margin-bottom:clamp(45px,calc(9vh + 20px),700px);
-}
-.traitspaced:nth-child(4){
-	margin-bottom:0;
 }
 
 .traitname{
@@ -122,6 +115,21 @@ section {
 	
 	pointer-events: none;
 }
+
+.traiticonic{
+	position:absolute;
+	outline:5px solid black;
+	margin:10px;
+	z-index:1;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	
+	pointer-events: none;
+}
+
 
 button{
 	border:2px solid black;
@@ -173,13 +181,6 @@ button{
 	.traitbutton{
 		font-size:clamp(35px,6vh,70px);
 	}
-	.traitspaced{
-		margin-bottom:clamp(45px,calc(6vh + 10px),700px);
-	}
-	.traitspaced:nth-child(4){
-		margin-bottom:0;
-	}
-	
 	.trackname{
 		writing-mode: horizontal-tb;
 		width:70px;
