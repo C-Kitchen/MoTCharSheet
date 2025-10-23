@@ -70,7 +70,7 @@ class HarmTrack{
 			this.buttons[i].className = "trackbutton";
 			this.track.appendChild(this.buttons[i]);
 			this.buttons[i].addEventListener("mousedown",() => this.starthold(i));
-			this.buttons[i].addEventListener("click",() => this.push(i));
+			this.buttons[i].addEventListener("mouseup",() => this.push(i));
 			this.buttons[i].addEventListener("mouseover",() => this.starthover(i));
 			this.buttons[i].addEventListener("mouseout",() => this.updateButtons());
 		}
