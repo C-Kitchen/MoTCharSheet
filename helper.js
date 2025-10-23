@@ -13,6 +13,7 @@ class Trait{
 		calculateall();
 	}
 }
+
 let traits = 
 [
 	[
@@ -37,12 +38,125 @@ let traits =
 	]
 ];
 
-traitcols = [];
+let traitcols = [];
+let traitarea = document.getElementById("traitarea");
+let trackarea = document.getElementById("trackarea");
+let time;
+
+class HarmTrack{
+	constructor(name){
+		this.name = name;
+		this.tempmax = 3;
+		this.max = 10;
+		
+		this.hold = false;
+		this.thing = null;
+		
+		this.minorharm = 0;
+		this.lingeringharm = 0;
+		
+		this.track = document.createElement("DIV");
+		this.track.classList.add("trackrow");
+		trackarea.appendChild(this.track);
+		
+		this.nameelement = document.createElement("DIV");
+		this.nameelement.textContent = name;
+		this.nameelement.classList.add("trackname");
+		this.track.appendChild(this.nameelement);
+		
+		this.buttons = [];
+		for (let i = 0; i < this.max; i++){
+			this.buttons.push(document.createElement("BUTTON"));
+			this.buttons[i].className = "trackbutton";
+			this.track.appendChild(this.buttons[i]);
+			this.buttons[i].addEventListener("mousedown",() => this.starthold(i));
+			this.buttons[i].addEventListener("click",() => this.push(i));
+			this.buttons[i].addEventListener("mouseover",() => this.starthover(i));
+			this.buttons[i].addEventListener("mouseout",() => this.updateButtons());
+		}
+	}
+	
+	starthold(n){
+		console.log("push " + n);
+		this.hold = false;
+		clearTimeout(this.timeout);
+		//set a timer for hold to be true
+		this.timeout = setTimeout(() => this.holdevent(n), 400);
+	}
+	
+	holdevent(n){
+		this.hold = true;
+		console.log("hold " + n);
+		this.hover(n);
+	}
+	
+	starthover(n){
+		/*this.hold = false;*/
+		console.log("hi");
+		this.hover(n);
+	}
+	
+	push(n){
+		//this.hold = (Date.now() - time) > 400;/*make an event happen instead of here?*/
+		console.log(this.hold);
+		if (n +1 > this.minorharm + this.lingeringharm){
+			if (this.hold){
+				this.lingeringharm = n+1 - this.minorharm;
+			} else if (n + 1 > this.tempmax){
+				this.minorharm += n+1 - (this.minorharm + this.lingeringharm);
+				this.minorharm = this.minorharm > this.tempmax ? this.tempmax : this.minorharm;
+				this.lingeringharm = n+1 - this.minorharm;
+			} else{
+				this.minorharm = n+1;
+			}
+		} else if (n + 1 > this.minorharm){
+			this.lingeringharm = n - this.minorharm;
+		} else {
+			if (this.hold){
+				this.lingeringharm = 0;
+			}
+			this.minorharm = n;
+		}
+		clearTimeout(this.timeout);
+		this.hold = false;
+		this.updateButtons();
+	}
+	
+	hover(n){/*the way this works is a bit wonky. Need to set it so that you use the hover CSS function, it seems like whenever updateButtons is called it can make buttons jump around a bit for maybe a frame or something*/
+		console.log("hover " + n + this.hold);
+		if (n + 1 > this.minorharm + this.lingeringharm){
+			for (let i = this.minorharm + this.lingeringharm; i < n + 1; i++){
+				if ((i + 1 - (this.minorharm + this.lingeringharm) > this.tempmax - this.minorharm) || this.hold){
+					this.buttons[i].className = "lingeringharmadd";
+				} else {
+					this.buttons[i].className = "minorharmadd";
+				}
+			}
+		} else {
+			for (let i = n; i < this.minorharm + (this.hold || (n + 1 > this.minorharm) ? this.lingeringharm : 0); i++){
+				this.buttons[i].className += "del";
+			}
+		}
+	}
+	
+	updateButtons(){
+		for (let i = 0; i < this.buttons.length; i++){
+			if (i < this.minorharm){
+				this.buttons[i].className = "minorharm";
+			} else if (i < this.minorharm + this.lingeringharm){
+				this.buttons[i].className = "lingeringharm";
+			} else {
+				this.buttons[i].className = "trackbutton";
+			}
+		}
+		/*this.hold = false;*/
+	}
+}
 
 for (let i = 0; i < 4; i++){
 	traitcols.push(document.createElement("DIV"));
 	traitcols[i].classList.add("traitcolumn");
-	document.getElementById("traitarea").appendChild(traitcols[i]);
+	traitarea.appendChild(traitcols[i]);
 }
 
 for (let i = 0; i < traits.length; i++){
@@ -86,6 +200,9 @@ for (let i = 0; i < traits.length; i++){
 }
 
 resizeButtons();
+test = new HarmTrack("Woe");
+test = new HarmTrack("Fatigue");
+test = new HarmTrack("Wounds");
 
 function resizeButtons(){
 	for (let i = 0; i < traits.length; i++){

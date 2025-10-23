@@ -67,11 +67,81 @@ section {
 	flex-direction:column;
 }
 
-.trackbutton {
+.trackbutton, .minorharm, .lingeringharm,
+.minorharmadd, .lingeringharmadd,
+.minorharmdel, .lingeringharmdel {
 	background: #fff;
 	margin-top:10px;
 	height:30px;
 	width:30px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.minorharm::before,
+.minorharm::after,
+.lingeringharm::after,
+.minorharmadd::before,
+.minorharmadd::after,
+.lingeringharmadd::after,
+.minorharmdel::before,
+.minorharmdel::after,
+.lingeringharmdel::after {
+	content: "";
+	position: absolute;
+	border: none;
+}
+.minorharm::before,
+.minorharm::after,
+.lingeringharm::after{
+	background-color: black;
+}
+
+.minorharmadd::before,
+.minorharmadd::after,
+.lingeringharmadd::after{
+	background-color: #777;
+}
+
+.minorharmdel::before,
+.minorharmdel::after,
+.lingeringharmdel::after{
+	background-color: #bbb;
+}
+
+
+.minorharm::before,
+.minorharm::after,
+.minorharmadd::before,
+.minorharmadd::after,
+.minorharmdel::before,
+.minorharmdel::after{
+	width: 20px;
+	height: 3px;
+}
+
+
+.minorharm::before,
+.minorharmadd::before,
+.minorharmdel::before {
+    transform: rotate(45deg);  /* Rotate first line */
+}
+
+.minorharm::after,
+.minorharmadd::after,
+.minorharmdel::after {
+    transform: rotate(-45deg); /* Rotate second line */
+}
+
+
+.lingeringharm::after,
+.lingeringharmadd::after,
+.lingeringharmdel::after {
+	width: 80%;
+	height: 80%;
 }
 
 .trackname{
@@ -92,6 +162,7 @@ section {
 
 .trait{
 	position:relative;
+	overflow: hidden;
 	display: flex;
 	flex-direction: column;
 }
@@ -197,7 +268,9 @@ button{
 		
 	}
 	
-	.trackbutton{
+	.trackbutton, .minorharm, .lingeringharm,
+	.minorharmadd, .lingeringharmadd,
+	.minorharmdel, .lingeringharmdel{
 		margin-top:0px;
 		margin-left:10px;
 	}
