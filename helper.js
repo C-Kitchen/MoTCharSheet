@@ -72,7 +72,7 @@ class HarmTrack{
 			this.buttons[i].addEventListener("mousedown",() => this.starthold(i));
 			this.buttons[i].addEventListener("touchstart",() => this.starthold(i));
 			this.buttons[i].addEventListener("click",() => this.push(i));
-			this.buttons[i].addEventListener("touchend",() => this.push(i));
+			this.buttons[i].addEventListener("touchend",() => this.push(i); preventDefault());
 			this.buttons[i].addEventListener("mouseover",() => this.starthover(i));
 			this.buttons[i].addEventListener("mouseout",() => this.updateButtons());
 		}
