@@ -47,7 +47,7 @@ class HarmTrack{
 	constructor(name){
 		this.name = name;
 		this.tempmax = 3;
-		this.max = 10;
+		this.max = 13;
 		
 		this.hold = false;
 		this.thing = null;
@@ -72,7 +72,7 @@ class HarmTrack{
 			this.buttons[i].addEventListener("mousedown",() => this.starthold(i));
 			this.buttons[i].addEventListener("touchstart",() => this.starthold(i));
 			this.buttons[i].addEventListener("click",() => this.push(i));
-			this.buttons[i].addEventListener("touchend",() => this.push(i); preventDefault());
+			this.buttons[i].addEventListener("touchend",() => this.push(i));
 			this.buttons[i].addEventListener("mouseover",() => this.starthover(i));
 			this.buttons[i].addEventListener("mouseout",() => this.updateButtons());
 		}
@@ -105,11 +105,11 @@ class HarmTrack{
 			if (this.hold){
 				this.lingeringharm = n+1 - this.minorharm;
 			} else if (n + 1 > this.tempmax){
-				this.minorharm += n+1 - (this.minorharm + this.lingeringharm);
+				this.minorharm = n+1 - this.lingeringharm;
 				this.minorharm = this.minorharm > this.tempmax ? this.tempmax : this.minorharm;
 				this.lingeringharm = n+1 - this.minorharm;
 			} else{
-				this.minorharm = n+1;
+				this.minorharm = n+1 - this.lingeringharm;
 			}
 		} else if (n + 1 > this.minorharm){
 			this.lingeringharm = n - this.minorharm;
