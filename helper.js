@@ -19,28 +19,14 @@ class Trait{
 }
 
 let traits = 
-[
-	[
-		[
-			[new Trait("Aggression"), new Trait("Heft"), new Trait("Strength")],
-			[new Trait("Dexterity"), new Trait("Reaction"), new Trait("Speed")]
-		],
-		[
-			[new Trait("Stability"), new Trait("Toughness"), new Trait("Stamina")],
-			[new Trait("Wisdom"), new Trait("Intuition"), new Trait("Willpower")]
-		]
-	],
-	[
-		[
-			[new Trait("Presence"), new Trait("Guile"), new Trait("Charm")],
-			[new Trait("Wits"), new Trait("Reason"), new Trait("Savvy")]
-		],
-		[
-			[new Trait("Grace"), new Trait("Stealth"), new Trait("Agility")],
-			[new Trait("Empathy"), new Trait("Scrutiny"), new Trait("Awareness")]
-		]
-	]
-];
+[[[[new Trait("Aggression"), new Trait("Heft")     , new Trait("Strength") ],
+   [new Trait("Dexterity") , new Trait("Reaction") , new Trait("Speed")    ]],
+  [[new Trait("Stability") , new Trait("Toughness"), new Trait("Stamina")  ],
+   [new Trait("Wisdom")    , new Trait("Intuition"), new Trait("Willpower")]]],
+ [[[new Trait("Presence")  , new Trait("Guile")    , new Trait("Charm")    ],
+   [new Trait("Wits")      , new Trait("Reason")   , new Trait("Savvy")    ]],
+  [[new Trait("Grace")     , new Trait("Stealth")  , new Trait("Agility")  ],
+   [new Trait("Empathy")   , new Trait("Scrutiny") , new Trait("Awareness")]]]];
 
 let traitcols = [];
 let traitarea = document.getElementById("traitarea");
