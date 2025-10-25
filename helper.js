@@ -5,11 +5,15 @@ class Trait{
 		this.htmlelement = null;
 		this.valueelement = null;
 		this.iconicelement = null;
+		this.relatedtrack = null;
 	}
 	flip(){
 		this.iconic = !this.iconic;
 		this.iconicelement.style.visibility = this.iconic ? "visible" : "hidden";
 		console.log(this.name + this.iconic);
+		if (this.relatedtrack != null){
+			this.relatedtrack.refresh();
+		}
 		calculateall();
 	}
 }
@@ -44,16 +48,22 @@ let trackarea = document.getElementById("trackarea");
 let time;
 
 class HarmTrack{
-	constructor(name){
+	constructor(name, relatedtrait){
 		this.name = name;
 		this.tempmax = 3;
-		this.max = 13;
+		this.defaultmax = 13;
+		this.traitmaxadd = 1;
 		
 		this.hold = false;
 		this.thing = null;
 		
 		this.minorharm = 0;
 		this.lingeringharm = 0;
+		this.relatedtrait = relatedtrait;
+		if (this.relatedtrait != null){
+			console.log(this.relatedtrait.name);
+			this.relatedtrait.relatedtrack = this;
+		}
 		
 		this.track = document.createElement("DIV");
 		this.track.classList.add("trackrow");
@@ -65,7 +75,7 @@ class HarmTrack{
 		this.track.appendChild(this.nameelement);
 		
 		this.buttons = [];
-		for (let i = 0; i < this.max; i++){
+		for (let i = 0; i < this.defaultmax + this.traitmaxadd; i++){
 			this.buttons.push(document.createElement("BUTTON"));
 			this.buttons[i].className = "trackbutton";
 			this.track.appendChild(this.buttons[i]);
@@ -76,7 +86,24 @@ class HarmTrack{
 			this.buttons[i].addEventListener("mouseover",() => this.starthover(i));
 			this.buttons[i].addEventListener("mouseout",() => this.updateButtons());
 		}
+		this.max = 0;
+		this.refresh();
 	}
+	
+	refresh(){
+		if (this.relatedtrait != null){
+			this.max = this.defaultmax + (this.relatedtrait.iconic ? this.traitmaxadd : 0);
+		} else {
+			this.max = this.defaultmax;
+		}
+		for (let i = this.defaultmax; i < this.buttons.length; i++){
+			this.buttons[i].style.visibility = this.relatedtrait == null || !(this.relatedtrait.iconic) ? "collapse" : "visible";
+		}
+
+
+	}
+	
+	
 	
 	starthold(n){
 		console.log("push " + n);
@@ -202,9 +229,9 @@ for (let i = 0; i < traits.length; i++){
 }
 
 resizeButtons();
-test = new HarmTrack("Woe");
-test = new HarmTrack("Fatigue");
-test = new HarmTrack("Wounds");
+woe = new HarmTrack("Woe",traits[0][1][1][2]);
+fatigue = new HarmTrack("Fatigue",traits[0][1][0][2]);
+wounds = new HarmTrack("Wounds",traits[0][1][0][1]);
 
 function resizeButtons(){
 	for (let i = 0; i < traits.length; i++){
