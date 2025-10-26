@@ -67,9 +67,7 @@ section {
 	flex-direction:column;
 }
 
-.trackbutton, .minorharm, .lingeringharm,
-.minorharmadd, .lingeringharmadd,
-.minorharmdel, .lingeringharmdel {
+.trackbutton {
 	background: #fff;
 	margin-top:10px;
 	height:30px;
@@ -79,69 +77,10 @@ section {
 	align-items: center;
 	justify-content: center;
 	overflow: hidden;
-}
-
-.minorharm::before,
-.minorharm::after,
-.lingeringharm::after,
-.minorharmadd::before,
-.minorharmadd::after,
-.lingeringharmadd::after,
-.minorharmdel::before,
-.minorharmdel::after,
-.lingeringharmdel::after {
-	content: "";
-	position: absolute;
-	border: none;
-}
-.minorharm::before,
-.minorharm::after,
-.lingeringharm::after{
-	background-color: black;
-}
-
-.minorharmadd::before,
-.minorharmadd::after,
-.lingeringharmadd::after{
-	background-color: #777;
-}
-
-.minorharmdel::before,
-.minorharmdel::after,
-.lingeringharmdel::after{
-	background-color: #bbb;
-}
-
-
-.minorharm::before,
-.minorharm::after,
-.minorharmadd::before,
-.minorharmadd::after,
-.minorharmdel::before,
-.minorharmdel::after{
-	width: 20px;
-	height: 3px;
-}
-
-
-.minorharm::before,
-.minorharmadd::before,
-.minorharmdel::before {
-    transform: rotate(45deg);  /* Rotate first line */
-}
-
-.minorharm::after,
-.minorharmadd::after,
-.minorharmdel::after {
-    transform: rotate(-45deg); /* Rotate second line */
-}
-
-
-.lingeringharm::after,
-.lingeringharmadd::after,
-.lingeringharmdel::after {
-	width: 80%;
-	height: 80%;
+	
+	font-weight:bold;
+	font-family:Courier;
+	font-size: 20px;
 }
 
 .trackname{
@@ -200,7 +139,6 @@ section {
 	pointer-events: none;
 }
 
-
 button{
 	border:2px solid black;
 	outline:2px solid black;
@@ -255,11 +193,11 @@ button{
 		writing-mode: horizontal-tb;
 		width:70px;
 		height:0px;
-		/*-ms-transform: translate(0%,30%) rotate(-30deg);
-		-webkit-transform: translate(0%,30%) rotate(-30deg);
-		-moz-transform: translate(0%,30%) rotate(-30deg);
-		-o-transform: translate(0%,30%) rotate(-30deg);
-		-sand-transform: translate(0%,30%) rotate(-30deg);*/
+		-ms-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-sand-transform: rotate(0deg);
 		transform: rotate(0deg);
 		
 		
@@ -267,9 +205,7 @@ button{
 		
 	}
 	
-	.trackbutton, .minorharm, .lingeringharm,
-	.minorharmadd, .lingeringharmadd,
-	.minorharmdel, .lingeringharmdel{
+	.trackbutton{
 		margin-top:0px;
 		margin-left:10px;
 	}
