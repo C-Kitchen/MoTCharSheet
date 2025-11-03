@@ -1,6 +1,28 @@
 svgx = "<svg viewBox=\"0 0 10 10\" fill=\"currentColor\" stroke=\"currentColor\" style=\"stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"><line x1=1 y1=1 x2=9 y2=9></line><line x1=9 y1=1 x2=1 y2=9></line></svg>";
 svgbox = "<svg viewBox=\"0 0 10 10\" fill=\"currentColor\" stroke=\"currentColor\" style=\"stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"><rect width=8 height=8 x=1 y=1></rect></svg>";
 
+
+let hold = false;
+let timeout;
+
+function startHold(func){
+	hold = false;
+	clearTimeout(timeout);
+	timeout = setTimeout(() => holdevent(func), 400);
+}
+
+function endHold(){
+	clearTimeout(timeout);
+	hold = false;
+}
+
+function holdevent(func){
+	hold = true;
+	func();
+}
+
+
+
 class Trait{
 	constructor(name){
 		this.name = name;
@@ -71,7 +93,7 @@ class HarmTrack{
 			/*this.buttons[i].addEventListener("touchstart",() => this.starthold(i));*/
 			this.buttons[i].addEventListener("mouseup",() => this.push(i));
 			/*this.buttons[i].addEventListener("touchend",() => this.push(i));*/
-			this.buttons[i].addEventListener("mouseover",() => this.starthover(i));
+			this.buttons[i].addEventListener("mouseover",(event) => this.starthover(i, event));
 			this.buttons[i].addEventListener("mouseout",() => this.updateButtons());
 		}
 		this.max = 0;
@@ -103,9 +125,12 @@ class HarmTrack{
 		this.hover(n);
 	}
 	
-	starthover(n){
+	starthover(n,e ){
 		/*this.hold = false;*/
 		/*console.log("hi");*/
+		if (e.buttons == 0){
+			this.hold = false;
+		}
 		this.hover(n);
 	}
 	
