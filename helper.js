@@ -1,6 +1,63 @@
 svgx = "<svg viewBox=\"0 0 10 10\" fill=\"currentColor\" stroke=\"currentColor\" style=\"stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"><line x1=1 y1=1 x2=9 y2=9></line><line x1=9 y1=1 x2=1 y2=9></line></svg>";
 svgbox = "<svg viewBox=\"0 0 10 10\" fill=\"currentColor\" stroke=\"currentColor\" style=\"stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"><rect width=8 height=8 x=1 y=1></rect></svg>";
 
+
+let hold = false;
+let holdtimer = null;
+let trackpressed = null;
+let trackn = null;
+let mousein = false;
+
+function mousedown(el, n){
+	hold = false;
+	trackpressed = el;
+	trackn = n;
+	clearTimeout(holdtimer);
+	holdtimer = setTimeout(() => holdevent(el, n), 400);
+}
+
+function mouseup(el, n){
+	if (el == trackpressed && n == trackn){
+		el.click(n);
+	}
+}
+
+function globalmouseup(){
+	/*//may need to update this to be global hover then check mouse button
+	if (e.buttons == 0){
+			this.hold = false;
+		}*/
+	console.log("mouseup");
+	clearTimeout(holdtimer);
+	hold = false;
+	trackpressed = null;
+	trackn = null;
+}
+
+function holdevent(el, n){
+	console.log("holdevent");
+	hold = true;
+	if (mousein){
+		el.hover(n);
+	}
+}
+
+function mouseover (el, n){
+	console.log("mouseover");
+	if ((el == trackpressed && n == trackn) || trackpressed == null){
+		el.hover(n);
+		mousein = true;
+	}
+}
+
+function mouseout (el){
+	console.log("mouseout");
+	el.nomouse();
+	mousein = false;
+}
+
+document.addEventListener("mouseup",() => globalmouseup());
+
 class Trait{
 	constructor(name){
 		this.name = name;
@@ -43,9 +100,6 @@ class HarmTrack{
 		this.defaultmax = 13;
 		this.traitmaxadd = 1;
 		
-		this.hold = false;
-		this.thing = null;
-		
 		this.minorharm = 0;
 		this.lingeringharm = 0;
 		this.relatedtrait = relatedtrait;
@@ -67,12 +121,12 @@ class HarmTrack{
 			this.buttons.push(document.createElement("BUTTON"));
 			this.buttons[i].className = "trackbutton";
 			this.track.appendChild(this.buttons[i]);
-			this.buttons[i].addEventListener("mousedown",() => this.starthold(i));
-			/*this.buttons[i].addEventListener("touchstart",() => this.starthold(i));*/
-			this.buttons[i].addEventListener("mouseup",() => this.push(i));
-			/*this.buttons[i].addEventListener("touchend",() => this.push(i));*/
-			this.buttons[i].addEventListener("mouseover",() => this.starthover(i));
-			this.buttons[i].addEventListener("mouseout",() => this.updateButtons());
+			this.buttons[i].addEventListener("mousedown",() => mousedown(this,i));
+			this.buttons[i].addEventListener("touchstart",() => mousedown(this,i));
+			this.buttons[i].addEventListener("mouseup",() => mouseup(this,i));
+			this.buttons[i].addEventListener("touchend",() => mouseup(this,i));
+			this.buttons[i].addEventListener("mouseover",() => mouseover(this, i));
+			this.buttons[i].addEventListener("mouseout",() => mouseout(this));
 		}
 		this.max = 0;
 		this.refresh();
@@ -89,32 +143,11 @@ class HarmTrack{
 		}
 	}
 	
-	starthold(n){
-		/*console.log("push " + n);*/
-		this.hold = false;
-		clearTimeout(this.timeout);
-		//set a timer for hold to be true
-		this.timeout = setTimeout(() => this.holdevent(n), 400);
-	}
-	
-	holdevent(n){
-		this.hold = true;
-		/*console.log("hold " + n);*/
-		this.hover(n);
-	}
-	
-	starthover(n){
-		/*this.hold = false;*/
-		/*console.log("hi");*/
-		this.hover(n);
-	}
-	
-	push(n){
-		//this.hold = (Date.now() - time) > 400;/*make an event happen instead of here?*/
-		console.log(this.hold);
+	click(n){
+		console.log(hold);
 		
 		if (n +1 > this.minorharm + this.lingeringharm){
-			if (this.hold){
+			if (hold){
 				console.log("hold");
 				this.lingeringharm = n+1 - this.minorharm;
 			} else if (n + 1 > this.tempmax){
@@ -127,36 +160,34 @@ class HarmTrack{
 		} else if (n + 1 > this.minorharm){
 			this.lingeringharm = n - this.minorharm;
 		} else {
-			if (this.hold){
+			if (hold){
 				this.lingeringharm = 0;
 			}
 			this.minorharm = n;
 		}
-		clearTimeout(this.timeout);
-		this.hold = false;
-		this.updateButtons();
+		this.hover(n);
 	}
 	
 	hover(n){
-		console.log("hover " + n + this.hold);
+		this.nomouse();
+		console.log("hover " + n + hold);
 		if (n + 1 > this.minorharm + this.lingeringharm){
 			for (let i = this.minorharm + this.lingeringharm; i < n + 1; i++){
-				if ((i + 1 - (this.minorharm + this.lingeringharm) > this.tempmax - this.minorharm) || this.hold){
+				if ((i + 1 - (this.minorharm + this.lingeringharm) > this.tempmax - this.minorharm) || hold){
 					this.buttons[i].innerHTML = svgbox;
-					this.buttons[i].style.color="#777";
 				} else {
 					this.buttons[i].innerHTML = svgx;
-					this.buttons[i].style.color="#777";
 				}
+				this.buttons[i].style.color="#777";
 			}
 		} else {
-			for (let i = n; i < this.minorharm + (this.hold || (n + 1 > this.minorharm) ? this.lingeringharm : 0); i++){
+			for (let i = n; i < this.minorharm + (hold || (n + 1 > this.minorharm) ? this.lingeringharm : 0); i++){
 				this.buttons[i].style.color="#bbb";
 			}
 		}
 	}
 	
-	updateButtons(){
+	nomouse(){
 		for (let i = 0; i < this.buttons.length; i++){
 			if (i < this.minorharm){
 				this.buttons[i].innerHTML = svgx;
@@ -205,7 +236,6 @@ class BurdenTrack{
 			this.buttons[i].className = "trackbutton";
 			this.track.appendChild(this.buttons[i]);
 			this.burdens.push(0);
-			this.buttons[i].addEventListener("click",() => this.push(i));
 			
 			this.thing1=document.createElement("DIV");
 			this.thing1.className = "trackthing";
@@ -213,12 +243,12 @@ class BurdenTrack{
 			this.thing2.className = "trackthing";
 			this.buttons[i].appendChild(this.thing1);
 			this.buttons[i].appendChild(this.thing2);
-/*			this.buttons[i].addEventListener("mousedown",() => this.starthold(i));
-			this.buttons[i].addEventListener("touchstart",() => this.starthold(i));
-			
-			this.buttons[i].addEventListener("touchend",() => this.push(i));
-			this.buttons[i].addEventListener("mouseover",() => this.starthover(i));
-			this.buttons[i].addEventListener("mouseout",() => this.updateButtons());*/
+			this.buttons[i].addEventListener("mousedown",() => mousedown(this,i));
+			this.buttons[i].addEventListener("touchstart",() => mousedown(this,i));
+			this.buttons[i].addEventListener("mouseup",() => mouseup(this,i));
+			this.buttons[i].addEventListener("touchend",() => mouseup(this,i));
+			this.buttons[i].addEventListener("mouseover",() => mouseover(this, i));
+			this.buttons[i].addEventListener("mouseout",() => mouseout(this));
 		}
 		this.max = 0;
 		console.log(this.burdens);
@@ -237,14 +267,53 @@ class BurdenTrack{
 			this.buttons[i].style.visibility = i < this.max ? "visible" : "collapse";
 		}
 		for (let i = 0; i < this.buttons.length; i ++){
+			this.buttons[i].style.color="#000";
 			this.buttons[i].textContent = burdenvalues[this.burdens[i]];
 			console.log(this.burdens[i]);
 		}
 	}
 	
-	push(n){
-		this.burdens[n] = (this.burdens[n]+1)%burdenvalues.length;
+	nomouse(){
 		this.refresh();
+	}
+	
+	click(n){
+		if (hold){
+			if (this.burdens[n] > 1){
+				this.burdens[n] = 0;
+			} else if (this.burdens[n] == 1){
+				this.burdens[n] = 2;
+			} else {
+				this.burdens[n] = 3;
+			}
+		} else{
+			if (this.burdens[n] == 0){
+				this.burdens[n] = 1;
+			} else {
+				this.burdens[n] = 0;
+			}
+		}
+		hold = false;
+		this.nomouse();
+		this.hover(n);
+	}
+	
+	hover(n){
+		if (this.burdens[n] == 0){
+			this.buttons[n].style.color="#777";
+			if (hold){
+				this.buttons[n].textContent = burdenvalues[3];
+			} else {
+				this.buttons[n].textContent = burdenvalues[1];
+			}
+		} else {
+			if (this.burdens[n] == 1 && hold){
+				this.buttons[n].style.color="#777";
+				this.buttons[n].textContent = burdenvalues[2];
+			} else {
+				this.buttons[n].style.color="#bbb";
+			}
+		}
 	}
 }
 

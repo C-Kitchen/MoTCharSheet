@@ -21,6 +21,10 @@ section {
 	font-family:Arial;
 }
 
+svg{
+	pointer-events: none;
+}
+
 .traitarea {
 	-webkit-flex: 3;
 	-ms-flex: 3;
