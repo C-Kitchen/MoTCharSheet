@@ -95,7 +95,7 @@ svg{
 	-moz-transform: rotate(-30deg);
 	-o-transform: rotate(-30deg);
 	-sand-transform: rotate(-30deg);
-	transform: rotate(-30deg);	
+	transform: translate(-20%,0%) rotate(-30deg);
 	
 	text-align: right;
 	height:70px;
