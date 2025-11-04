@@ -252,10 +252,10 @@ class BurdenTrack{
 		}
 		this.max = 0;
 		console.log(this.burdens);
-		this.nomouse();
+		this.refresh();
 	}
 	
-	nomouse(){
+	refresh(){
 		this.max = this.defaultmax;
 		if (this.strength != null && this.strength.iconic){
 			this.max += this.strengthbonus;
@@ -271,6 +271,10 @@ class BurdenTrack{
 			this.buttons[i].textContent = burdenvalues[this.burdens[i]];
 			console.log(this.burdens[i]);
 		}
+	}
+	
+	nomouse(){
+		this.refresh();
 	}
 	
 	click(n){
