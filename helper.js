@@ -266,15 +266,14 @@ class BurdenTrack{
 		for (let i = this.defaultmax; i < this.buttons.length; i++){
 			this.buttons[i].style.visibility = i < this.max ? "visible" : "collapse";
 		}
+	}
+	
+	nomouse(){
 		for (let i = 0; i < this.buttons.length; i ++){
 			this.buttons[i].style.color="#000";
 			this.buttons[i].textContent = burdenvalues[this.burdens[i]];
 			console.log(this.burdens[i]);
 		}
-	}
-	
-	nomouse(){
-		this.refresh();
 	}
 	
 	click(n){
