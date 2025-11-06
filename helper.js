@@ -15,11 +15,21 @@ function mousedown(el, n){
 	trackn = n;
 	clearTimeout(holdtimer);
 	holdtimer = setTimeout(() => holdevent(el, n), 400);
+	
+}
+
+function touchend(el, n){
+	if (el == trackpressed && n == trackn){
+		el.click(n);
+		el.nomouse();
+	}
+	globalmouseup();
 }
 
 function mouseup(el, n){
 	if (el == trackpressed && n == trackn){
 		el.click(n);
+		el.hover(n);
 	}
 }
 
@@ -125,7 +135,7 @@ class HarmTrack{
 			this.buttons[i].addEventListener("mousedown",() => mousedown(this,i));
 			this.buttons[i].addEventListener("touchstart",() => mousedown(this,i));
 			this.buttons[i].addEventListener("mouseup",() => mouseup(this,i));
-			this.buttons[i].addEventListener("touchend",() => mouseup(this,i));
+			this.buttons[i].addEventListener("touchend",(event) => {event.preventDefault();touchend(this,i);});
 			this.buttons[i].addEventListener("mouseover",() => mouseover(this, i));
 			this.buttons[i].addEventListener("mouseout",() => mouseout(this));
 		}
@@ -164,7 +174,6 @@ class HarmTrack{
 			}
 			this.minorharm = n;
 		}
-		this.hover(n);
 		code();
 	}
 	
@@ -246,7 +255,7 @@ class BurdenTrack{
 			this.buttons[i].addEventListener("mousedown",() => mousedown(this,i));
 			this.buttons[i].addEventListener("touchstart",() => mousedown(this,i));
 			this.buttons[i].addEventListener("mouseup",() => mouseup(this,i));
-			this.buttons[i].addEventListener("touchend",() => mouseup(this,i));
+			this.buttons[i].addEventListener("touchend",(event) => {event.preventDefault();touchend(this,i);});
 			this.buttons[i].addEventListener("mouseover",() => mouseover(this, i));
 			this.buttons[i].addEventListener("mouseout",() => mouseout(this));
 		}
@@ -295,7 +304,6 @@ class BurdenTrack{
 		code();
 		hold = false;
 		this.nomouse();
-		this.hover(n);
 	}
 	
 	hover(n){
