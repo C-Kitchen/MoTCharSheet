@@ -21,6 +21,7 @@ function mousedown(el, n){
 function touchend(el, n){
 	if (el == trackpressed && n == trackn){
 		el.click(n);
+		el.nomouse();
 	}
 }
 
@@ -253,7 +254,7 @@ class BurdenTrack{
 			this.buttons[i].addEventListener("mousedown",() => mousedown(this,i));
 			this.buttons[i].addEventListener("touchstart",() => mousedown(this,i));
 			this.buttons[i].addEventListener("mouseup",() => mouseup(this,i));
-			this.buttons[i].addEventListener("touchend",() => mouseup(this,i));
+			this.buttons[i].addEventListener("touchend",(event) => {event.preventDefault();touchend(this,i);});
 			this.buttons[i].addEventListener("mouseover",() => mouseover(this, i));
 			this.buttons[i].addEventListener("mouseout",() => mouseout(this));
 		}
