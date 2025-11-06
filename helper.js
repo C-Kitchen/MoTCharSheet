@@ -424,30 +424,30 @@ function calculateall(){
 
 locked = false;
 
-bbb = document.createElement("BUTTON");
-utilarea.appendChild(bbb);
-bbb.addEventListener("click", () => lock());
-bbb.textContent = "Lock";
+lockbutton = document.createElement("BUTTON");
+utilarea.appendChild(lockbutton);
+lockbutton.addEventListener("click", () => lock());
+lockbutton.textContent = "Lock";
 function lock(){
 	locked = !locked;
 	if (locked){
 		traitarea.style.pointerEvents = "none";
-		//bbb.textContent = "Locked";
-		bbb.style.backgroundColor = "#000";
-		bbb.style.color = "#fff";
+		//lockbutton.textContent = "Locked";
+		lockbutton.style.backgroundColor = "#000";
+		lockbutton.style.color = "#fff";
 	} else {
 		traitarea.style.pointerEvents = "auto";
-		//bbb.textContent = "Lock";
-		bbb.style.backgroundColor = "#fff";
-		bbb.style.color = "#000";
+		//lockbutton.textContent = "Lock";
+		lockbutton.style.backgroundColor = "#fff";
+		lockbutton.style.color = "#000";
 	}
 	code()
 }
 
-bbb2 = document.createElement("BUTTON");
-utilarea.appendChild(bbb2);
-//bbb2.addEventListener("click", () => code());
-bbb2.textContent = "Save";
+savebutton = document.createElement("BUTTON");
+utilarea.appendChild(savebutton);
+//savebutton.addEventListener("click", () => code());
+savebutton.textContent = "Save";
 
 var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$!';
 
@@ -457,8 +457,8 @@ if (qloc > 0){
 	console.log("hello");
 	decode(params);
 	calculateall();
-	bbb2.style.backgroundColor = "#000";
-	bbb2.style.color = "#fff";
+	savebutton.style.backgroundColor = "#000";
+	savebutton.style.color = "#fff";
 }
 
 function getBaseLog(x, y) {
@@ -510,9 +510,9 @@ function code(){
 	} else {
 		console.log("2");
 	}
-	bbb2.setAttribute('onclick', "window.location.href='" + url + '?@' + code + "';");
-	bbb2.style.backgroundColor = "#fff";
-	bbb2.style.color = "#000";
+	savebutton.setAttribute('onclick', "window.location.href='" + url + '?@' + code + "';");
+	savebutton.style.backgroundColor = "#fff";
+	savebutton.style.color = "#000";
 }
 
 function decode(code){
