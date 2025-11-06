@@ -164,6 +164,7 @@ class HarmTrack{
 			this.minorharm = n;
 		}
 		this.hover(n);
+		code();
 	}
 	
 	hover(n){
@@ -362,9 +363,10 @@ for (let i = 0; i < traits.length; i++){
 }
 
 resizeButtons();
-woe = new HarmTrack("Woe",traits[0][1][1][2]);
-fatigue = new HarmTrack("Fatigue",traits[0][1][0][2]);
-wounds = new HarmTrack("Wounds",traits[0][1][0][1]);
+harmtracks = [];
+harmtracks.push(new HarmTrack("Woe",traits[0][1][1][2]));
+harmtracks.push(new HarmTrack("Fatigue",traits[0][1][0][2]));
+harmtracks.push(new HarmTrack("Wounds",traits[0][1][0][1]));
 burdens = new BurdenTrack(traits[0][0][0][2],traits[0][0][0][1]);
 
 function resizeButtons(){
@@ -464,7 +466,7 @@ function getBaseLog(x, y) {
 
 
 function code(){
-	var save = [0,0,0,0,0,0,0,0];
+	var save = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	for (let i = 0; i < traits.length; i++){
 		for (let j = 0; j < traits[i].length; j++){
 			n = j + i*traits[i].length;
@@ -488,6 +490,12 @@ function code(){
 	} else {
 		save[7] = 0;
 	}
+	n = 8;
+	for (let i = 0; i < harmtracks.length; i++){
+		save[n+i*2] = harmtracks[i].minorharm;
+		save[n+i*2+1] = harmtracks[i].lingeringharm;
+	}
+	
 	console.log(url);
 	var code = '';
 	for (let i = 0; i < save.length; i ++){
@@ -507,7 +515,7 @@ function code(){
 }
 
 function decode(code){
-	var save = [0,0,0,0,0,0,0,0];
+	var save = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	for (let i = 0; i < code.length; i++){
 		save[i] = chars.lastIndexOf(code[i]);
 	}
@@ -529,9 +537,15 @@ function decode(code){
 		//console.log("" + i + "," + n + "," + (3 & (save[n] >> (i%bperchar) * bitsperburden)));
 		burdens.burdens	[i] = ((1 << bperchar - 1) - 1) & (save[n] >> (i%bperchar) * bitsperburden);
 	}
-	console.log("hi"+(save[7] & 1));
+	burdens.nomouse();
+	
 	locked = (save[7] & 1) != 1;
 	lock();
-	burdens.refresh();
-	burdens.nomouse();
+	
+	n = 8;
+	for (let i = 0; i < harmtracks.length; i++){
+		harmtracks[i].minorharm = save[n+i*2];
+		harmtracks[i].lingeringharm = save[n+i*2+1];
+		harmtracks[i].nomouse();
+	}
 }
