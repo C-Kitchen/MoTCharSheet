@@ -97,6 +97,13 @@ svg{
 	-sand-transform: rotate(-30deg);
 	transform: translate(-20%,0%) rotate(-30deg);
 	
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	
 	text-align: right;
 	height:70px;
 	width:30px;
@@ -203,7 +210,6 @@ button{
 		-o-transform: rotate(0deg);
 		-sand-transform: rotate(0deg);
 		transform: rotate(0deg);
-		
 		
 		margin-right:15px;
 		
