@@ -454,7 +454,6 @@ var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$!';
 var qloc = url.lastIndexOf('?@');
 if (qloc > 0){
 	var params = url.substr(qloc+2,url.length);
-	console.log("hello");
 	decode(params);
 	calculateall();
 	savebutton.style.backgroundColor = "#000";
@@ -497,19 +496,17 @@ function code(){
 		save[n+i*2+1] = harmtracks[i].lingeringharm;
 	}
 	
-	console.log(url);
+	//console.log(url);
 	var code = '';
 	for (let i = 0; i < save.length; i ++){
 		code += chars[save[i]];
 	}
 	var qloc = url.lastIndexOf('?@');
-	console.log(qloc);
+	//console.log(qloc);
 	if (qloc > 0){
 		url=url.substr(0,qloc);
-		console.log("1");
-	} else {
-		console.log("2");
 	}
+	
 	savebutton.setAttribute('onclick', "window.location.href='" + url + '?@' + code + "';");
 	savebutton.style.backgroundColor = "#fff";
 	savebutton.style.color = "#000";
@@ -520,7 +517,7 @@ function decode(code){
 	for (let i = 0; i < code.length; i++){
 		save[i] = chars.lastIndexOf(code[i]);
 	}
-	console.log(save);
+	//console.log(save);
 	for (let i = 0; i < traits.length; i++){
 		for (let j = 0; j < traits[i].length; j++){
 			n = j + i*traits[i].length;
