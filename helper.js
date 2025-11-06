@@ -438,6 +438,7 @@ function lock(){
 		bbb.style.backgroundColor = "#fff";
 		bbb.style.color = "#000";
 	}
+	code()
 }
 
 bbb2 = document.createElement("BUTTON");
@@ -463,7 +464,7 @@ function getBaseLog(x, y) {
 
 
 function code(){
-	var save = [0,0,0,0,0,0,0];
+	var save = [0,0,0,0,0,0,0,0];
 	for (let i = 0; i < traits.length; i++){
 		for (let j = 0; j < traits[i].length; j++){
 			n = j + i*traits[i].length;
@@ -481,6 +482,11 @@ function code(){
 		//console.log("" + i + "," + n + "," + burdens.burdens[i]);
 		
 		save[n] += burdens.burdens[i] << (i%bperchar) * bitsperburden;
+	}
+	if (locked){
+		save[7] = 1;
+	} else {
+		save[7] = 0;
 	}
 	console.log(url);
 	var code = '';
@@ -501,7 +507,7 @@ function code(){
 }
 
 function decode(code){
-	var save = [0,0,0,0,0,0,0];
+	var save = [0,0,0,0,0,0,0,0];
 	for (let i = 0; i < code.length; i++){
 		save[i] = chars.lastIndexOf(code[i]);
 	}
@@ -523,6 +529,9 @@ function decode(code){
 		//console.log("" + i + "," + n + "," + (3 & (save[n] >> (i%bperchar) * bitsperburden)));
 		burdens.burdens	[i] = ((1 << bperchar - 1) - 1) & (save[n] >> (i%bperchar) * bitsperburden);
 	}
+	console.log("hi"+(save[7] & 1));
+	locked = (save[7] & 1) != 1;
+	lock();
 	burdens.refresh();
 	burdens.nomouse();
 }
