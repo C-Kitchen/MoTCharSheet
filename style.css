@@ -21,15 +21,31 @@ section {
 	font-family:Arial;
 }
 
-.traitarea {
+svg{
+	pointer-events: none;
+}
+
+.superarea{
 	-webkit-flex: 3;
 	-ms-flex: 3;
 	-webkit-flex-direction: column;
 	flex: 3;
 	padding: 20px;
 	max-width: 720px;
-	word-wrap: break-word;
+	position:relative;
+}
+
+.utilarea{
+	position:absolute;
+	text-align:center;
+	top:50%;
+	left:50%;
 	
+	transform:translate(-50%,-50%);
+}
+
+
+.traitarea {
 	display: grid;
 	grid-template-areas:
 		"traitcolumn traitcolumn traitcolumn traitcolumn";
@@ -72,6 +88,15 @@ section {
 	margin-top:10px;
 	height:30px;
 	width:30px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	
+	font-weight:bold;
+	font-family:Courier;
+	font-size: 20px;
 }
 
 .trackname{
@@ -82,7 +107,14 @@ section {
 	-moz-transform: rotate(-30deg);
 	-o-transform: rotate(-30deg);
 	-sand-transform: rotate(-30deg);
-	transform: rotate(-30deg);	
+	transform: translate(-20%,0%) rotate(-30deg);
+	
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
 	
 	text-align: right;
 	height:70px;
@@ -90,21 +122,14 @@ section {
 	margin-bottom:15px;
 }
 
-.trait, .traitspaced{
+.trait{
 	position:relative;
 	display: flex;
 	flex-direction: column;
 }
 
-.traitspaced{
-	margin-bottom:clamp(45px,calc(9vh + 20px),700px);
-}
-.traitspaced:nth-child(4){
-	margin-bottom:0;
-}
-
 .traitname{
-	font-size:clamp(7px,1.8vh,20px);/*1.8vh;*/
+	font-size:clamp(1.8vh,7px,20px);/*1.8vh;*/
 	position:absolute;
 	text-align:center;
 	top:50%;
@@ -123,10 +148,27 @@ section {
 	pointer-events: none;
 }
 
+.traiticonic{
+	position:absolute;
+	outline:5px solid black;
+	margin:10px;
+	z-index:1;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	
+	pointer-events: none;
+}
+
 button{
+	font-size:clamp(2vh,7px,25px);/*1.8vh;*/
+	font-weight:bold;
 	border:2px solid black;
 	outline:2px solid black;
 	z-index:0;
+	background-color: #fff;
 }
 
 .traitbutton{
@@ -145,11 +187,6 @@ button{
 .traitbutton:active{
 	background-color:#aaa;
 }
-
-.traitcolumn:nth-child(2), .traitcolumn:nth-child(3) {
-	margin-top: calc(clamp(45px,calc(9vh + 10px),700px)/2);
-}
-
 
 /*this area applies only when the screen is narrow, e.g. on mobile*/
 @media (max-width: 850px) {
@@ -173,32 +210,21 @@ button{
 		flex-direction:row;
 	}
 	.traitname{
-		font-size:clamp(7px,1.2vh,14px);
+		font-size:clamp(1.2vh,7px,14px);
 	}
 	.traitbutton{
-		font-size:clamp(35px,6vh,70px);
+		font-size:clamp(6vh,35px,70px);
 	}
-	.traitcolumn:nth-child(2), .traitcolumn:nth-child(3) {
-		margin-top: clamp(23px,4vh,700px); 
-	}
-	.traitspaced{
-		margin-bottom:clamp(45px,calc(6vh + 10px),700px);
-	}
-	.traitspaced:nth-child(4){
-		margin-bottom:0;
-	}
-	
 	.trackname{
 		writing-mode: horizontal-tb;
 		width:70px;
 		height:0px;
-		/*-ms-transform: translate(0%,30%) rotate(-30deg);
-		-webkit-transform: translate(0%,30%) rotate(-30deg);
-		-moz-transform: translate(0%,30%) rotate(-30deg);
-		-o-transform: translate(0%,30%) rotate(-30deg);
-		-sand-transform: translate(0%,30%) rotate(-30deg);*/
+		-ms-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-sand-transform: rotate(0deg);
 		transform: rotate(0deg);
-		
 		
 		margin-right:15px;
 		
