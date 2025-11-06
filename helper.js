@@ -89,6 +89,7 @@ let traits =
    [new Trait("Empathy")   , new Trait("Scrutiny") , new Trait("Awareness")]]]];
 
 let traitcols = [];
+let utilarea = document.getElementById("utilarea");
 let traitarea = document.getElementById("traitarea");
 let trackarea = document.getElementById("trackarea");
 let time;
@@ -424,7 +425,7 @@ function calculateall(){
 locked = false;
 
 bbb = document.createElement("BUTTON");
-document.body.appendChild(bbb);
+utilarea.appendChild(bbb);
 bbb.addEventListener("click", () => lock());
 bbb.textContent = "Lock";
 function lock(){
@@ -444,7 +445,7 @@ function lock(){
 }
 
 bbb2 = document.createElement("BUTTON");
-document.body.appendChild(bbb2);
+utilarea.appendChild(bbb2);
 //bbb2.addEventListener("click", () => code());
 bbb2.textContent = "Save";
 

@@ -25,15 +25,27 @@ svg{
 	pointer-events: none;
 }
 
-.traitarea {
+.superarea{
 	-webkit-flex: 3;
 	-ms-flex: 3;
 	-webkit-flex-direction: column;
 	flex: 3;
 	padding: 20px;
 	max-width: 720px;
-	word-wrap: break-word;
+	position:relative;
+}
+
+.utilarea{
+	position:absolute;
+	text-align:center;
+	top:50%;
+	left:50%;
 	
+	transform:translate(-50%,-50%);
+}
+
+
+.traitarea {
 	display: grid;
 	grid-template-areas:
 		"traitcolumn traitcolumn traitcolumn traitcolumn";
@@ -151,6 +163,8 @@ svg{
 }
 
 button{
+	font-size:clamp(7px,1.8vh,20px);/*1.8vh;*/
+	font-weight:bold;
 	border:2px solid black;
 	outline:2px solid black;
 	z-index:0;
