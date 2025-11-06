@@ -129,7 +129,7 @@ svg{
 }
 
 .traitname{
-	font-size:clamp(7px,1.8vh,20px);/*1.8vh;*/
+	font-size:clamp(1.8vh,7px,20px);/*1.8vh;*/
 	position:absolute;
 	text-align:center;
 	top:50%;
@@ -163,11 +163,12 @@ svg{
 }
 
 button{
-	font-size:clamp(7px,1.8vh,20px);/*1.8vh;*/
+	font-size:clamp(2vh,7px,25px);/*1.8vh;*/
 	font-weight:bold;
 	border:2px solid black;
 	outline:2px solid black;
 	z-index:0;
+	background-color: #fff;
 }
 
 .traitbutton{
@@ -209,10 +210,10 @@ button{
 		flex-direction:row;
 	}
 	.traitname{
-		font-size:clamp(7px,1.2vh,14px);
+		font-size:clamp(1.2vh,7px,14px);
 	}
 	.traitbutton{
-		font-size:clamp(35px,6vh,70px);
+		font-size:clamp(6vh,35px,70px);
 	}
 	.trackname{
 		writing-mode: horizontal-tb;
