@@ -23,6 +23,7 @@ function touchend(el, n){
 		el.click(n);
 		el.nomouse();
 	}
+	globalmouseup();
 }
 
 function mouseup(el, n){
