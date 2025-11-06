@@ -7,6 +7,7 @@ let holdtimer = null;
 let trackpressed = null;
 let trackn = null;
 let mousein = false;
+let url = window.location.href;
 
 function mousedown(el, n){
 	hold = false;
@@ -23,11 +24,7 @@ function mouseup(el, n){
 }
 
 function globalmouseup(){
-	/*//may need to update this to be global hover then check mouse button
-	if (e.buttons == 0){
-			this.hold = false;
-		}*/
-	console.log("mouseup");
+	//console.log("mouseup");
 	clearTimeout(holdtimer);
 	hold = false;
 	trackpressed = null;
@@ -35,7 +32,7 @@ function globalmouseup(){
 }
 
 function holdevent(el, n){
-	console.log("holdevent");
+	//console.log("holdevent");
 	hold = true;
 	if (mousein){
 		el.hover(n);
@@ -43,7 +40,7 @@ function holdevent(el, n){
 }
 
 function mouseover (el, n){
-	console.log("mouseover");
+	//console.log("mouseover");
 	if ((el == trackpressed && n == trackn) || trackpressed == null){
 		el.hover(n);
 		mousein = true;
@@ -51,7 +48,7 @@ function mouseover (el, n){
 }
 
 function mouseout (el){
-	console.log("mouseout");
+	//console.log("mouseout");
 	el.nomouse();
 	mousein = false;
 }
@@ -69,13 +66,16 @@ class Trait{
 	}
 	flip(){
 		this.iconic = !this.iconic;
+		calculateall();
+	}
+	
+	calculate(){
 		this.iconicelement.style.visibility = this.iconic ? "visible" : "hidden";
-		console.log(this.name + this.iconic);
 		if (this.relatedtrack != null){
 			this.relatedtrack.refresh();
 		}
-		calculateall();
 	}
+	
 }
 
 let traits = 
@@ -89,6 +89,7 @@ let traits =
    [new Trait("Empathy")   , new Trait("Scrutiny") , new Trait("Awareness")]]]];
 
 let traitcols = [];
+let utilarea = document.getElementById("utilarea");
 let traitarea = document.getElementById("traitarea");
 let trackarea = document.getElementById("trackarea");
 let time;
@@ -144,11 +145,9 @@ class HarmTrack{
 	}
 	
 	click(n){
-		console.log(hold);
-		
+		//console.log(hold);
 		if (n +1 > this.minorharm + this.lingeringharm){
 			if (hold){
-				console.log("hold");
 				this.lingeringharm = n+1 - this.minorharm;
 			} else if (n + 1 > this.tempmax){
 				this.minorharm = n+1 - this.lingeringharm;
@@ -166,11 +165,12 @@ class HarmTrack{
 			this.minorharm = n;
 		}
 		this.hover(n);
+		code();
 	}
 	
 	hover(n){
 		this.nomouse();
-		console.log("hover " + n + hold);
+		//console.log("hover " + n + hold);
 		if (n + 1 > this.minorharm + this.lingeringharm){
 			for (let i = this.minorharm + this.lingeringharm; i < n + 1; i++){
 				if ((i + 1 - (this.minorharm + this.lingeringharm) > this.tempmax - this.minorharm) || hold){
@@ -251,7 +251,7 @@ class BurdenTrack{
 			this.buttons[i].addEventListener("mouseout",() => mouseout(this));
 		}
 		this.max = 0;
-		console.log(this.burdens);
+		//console.log(this.burdens);
 		this.refresh();
 	}
 	
@@ -272,7 +272,7 @@ class BurdenTrack{
 		for (let i = 0; i < this.buttons.length; i ++){
 			this.buttons[i].style.color="#000";
 			this.buttons[i].textContent = burdenvalues[this.burdens[i]];
-			console.log(this.burdens[i]);
+			//console.log(this.burdens[i]);
 		}
 	}
 	
@@ -292,6 +292,7 @@ class BurdenTrack{
 				this.burdens[n] = 0;
 			}
 		}
+		code();
 		hold = false;
 		this.nomouse();
 		this.hover(n);
@@ -363,9 +364,10 @@ for (let i = 0; i < traits.length; i++){
 }
 
 resizeButtons();
-woe = new HarmTrack("Woe",traits[0][1][1][2]);
-fatigue = new HarmTrack("Fatigue",traits[0][1][0][2]);
-wounds = new HarmTrack("Wounds",traits[0][1][0][1]);
+harmtracks = [];
+harmtracks.push(new HarmTrack("Woe",traits[0][1][1][2]));
+harmtracks.push(new HarmTrack("Fatigue",traits[0][1][0][2]));
+harmtracks.push(new HarmTrack("Wounds",traits[0][1][0][1]));
 burdens = new BurdenTrack(traits[0][0][0][2],traits[0][0][0][1]);
 
 function resizeButtons(){
@@ -410,10 +412,141 @@ function calculateall(){
 			for (let k = 0; k < traits[i][j].length; k++){
 				for (let l = 0; l < traits[i][j][k].length; l++){
 					calculatevalue(i,j,k,l);
+					traits[i][j][k][l].calculate();
 				}
 				
 			}
 		}
 	}
+	code();
 }
 
+
+locked = false;
+
+bbb = document.createElement("BUTTON");
+utilarea.appendChild(bbb);
+bbb.addEventListener("click", () => lock());
+bbb.textContent = "Lock";
+function lock(){
+	locked = !locked;
+	if (locked){
+		traitarea.style.pointerEvents = "none";
+		//bbb.textContent = "Locked";
+		bbb.style.backgroundColor = "#000";
+		bbb.style.color = "#fff";
+	} else {
+		traitarea.style.pointerEvents = "auto";
+		//bbb.textContent = "Lock";
+		bbb.style.backgroundColor = "#fff";
+		bbb.style.color = "#000";
+	}
+	code()
+}
+
+bbb2 = document.createElement("BUTTON");
+utilarea.appendChild(bbb2);
+//bbb2.addEventListener("click", () => code());
+bbb2.textContent = "Save";
+
+var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$!';
+
+var qloc = url.lastIndexOf('?@');
+if (qloc > 0){
+	var params = url.substr(qloc+2,url.length);
+	console.log("hello");
+	decode(params);
+	calculateall();
+	bbb2.style.backgroundColor = "#000";
+	bbb2.style.color = "#fff";
+}
+
+function getBaseLog(x, y) {
+	return Math.log(y) / Math.log(x);
+}
+
+
+function code(){
+	var save = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	for (let i = 0; i < traits.length; i++){
+		for (let j = 0; j < traits[i].length; j++){
+			n = j + i*traits[i].length;
+			for (let k = 0; k < traits[i][j].length; k++){
+				for (let l = 0; l < traits[i][j][k].length; l++){
+					save[n] += traits[i][j][k][l].iconic ? 1 << l + k*traits[i][j][k].length : 0;
+				}
+			}
+		}
+	}
+	let bperchar = Math.floor(getBaseLog(burdenvalues.length,chars.length));
+	let bitsperburden = Math.floor(getBaseLog(2,burdenvalues.length));
+	for (let i = 0; i < burdens.burdens.length; i++){
+		n=4+Math.floor(i/bperchar);
+		//console.log("" + i + "," + n + "," + burdens.burdens[i]);
+		
+		save[n] += burdens.burdens[i] << (i%bperchar) * bitsperburden;
+	}
+	if (locked){
+		save[7] = 1;
+	} else {
+		save[7] = 0;
+	}
+	n = 8;
+	for (let i = 0; i < harmtracks.length; i++){
+		save[n+i*2] = harmtracks[i].minorharm;
+		save[n+i*2+1] = harmtracks[i].lingeringharm;
+	}
+	
+	console.log(url);
+	var code = '';
+	for (let i = 0; i < save.length; i ++){
+		code += chars[save[i]];
+	}
+	var qloc = url.lastIndexOf('?@');
+	console.log(qloc);
+	if (qloc > 0){
+		url=url.substr(0,qloc);
+		console.log("1");
+	} else {
+		console.log("2");
+	}
+	bbb2.setAttribute('onclick', "window.location.href='" + url + '?@' + code + "';");
+	bbb2.style.backgroundColor = "#fff";
+	bbb2.style.color = "#000";
+}
+
+function decode(code){
+	var save = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	for (let i = 0; i < code.length; i++){
+		save[i] = chars.lastIndexOf(code[i]);
+	}
+	console.log(save);
+	for (let i = 0; i < traits.length; i++){
+		for (let j = 0; j < traits[i].length; j++){
+			n = j + i*traits[i].length;
+			for (let k = 0; k < traits[i][j].length; k++){
+				for (let l = 0; l < traits[i][j][k].length; l++){
+					traits[i][j][k][l].iconic = (save[n] & (1 << l + k*traits[i][j][k].length)) != 0;
+				}
+			}
+		}
+	}
+	let bperchar = Math.floor(getBaseLog(burdenvalues.length,chars.length));
+	let bitsperburden = Math.floor(getBaseLog(2,burdenvalues.length));
+	for (let i = 0; i < burdens.burdens.length; i++){
+		n=4+Math.floor(i/bperchar);
+		//console.log("" + i + "," + n + "," + (3 & (save[n] >> (i%bperchar) * bitsperburden)));
+		burdens.burdens	[i] = ((1 << bperchar - 1) - 1) & (save[n] >> (i%bperchar) * bitsperburden);
+	}
+	burdens.nomouse();
+	
+	locked = (save[7] & 1) != 1;
+	lock();
+	
+	n = 8;
+	for (let i = 0; i < harmtracks.length; i++){
+		harmtracks[i].minorharm = save[n+i*2];
+		harmtracks[i].lingeringharm = save[n+i*2+1];
+		harmtracks[i].nomouse();
+	}
+}
